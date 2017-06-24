@@ -187,7 +187,12 @@ try:
     emcc_binding_args = ['--bind']
     emcc_binding_args += include_dir_args
 
-    emscripten.Building.emcc('../../bindings.cpp', emcc_binding_args, 'bindings.bc')
+    bindingsFile = '../../bindings.cpp'
+    bindingsFile2 = '../../bindings2.cpp'
+    if os.path.exists( bindingsFile2 ):
+        bindingsFile = bindingsFile2     #   prefer "filtered" bindings file if it exists
+
+    emscripten.Building.emcc(bindingsFile, emcc_binding_args, 'bindings.bc')
     assert os.path.exists('bindings.bc')
 
     stage('Building OpenCV.js')
